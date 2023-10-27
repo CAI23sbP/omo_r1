@@ -272,7 +272,7 @@ class OMOR1MotorNode:
       self.config.wheel_circumference = self.config.wheel_radius * 2 * math.pi
       self.config.encoder_pulse_per_wheel_rev = self.config.encoder_pulse_per_gear_rev * self.config.encoder_gear_ratio * 4
       self.config.encoder_step = self.config.wheel_circumference / self.config.encoder_pulse_per_wheel_rev
-
+      self.ns  = str(rospy.get_namespace()).replace("/","")
       rospy.loginfo('Wheel Track:{:.2f}m, Radius:{:.3f}m'.format(self.config.wheel_separation, self.config.wheel_radius))
       rospy.loginfo('Platform Rotation arc length: {:04f}m'.format(self.config.body_circumference))
       rospy.loginfo('Wheel circumference: {:04f}m'.format(self.config.wheel_circumference))
@@ -382,8 +382,8 @@ class OMOR1MotorNode:
       self.odom_vel.y = 0.0
       self.odom_vel.w = d_theta / d_time
 
-      parent_frame_id = "odom"
-      child_frame_id = "base_footprint"
+      parent_frame_id = self.ns+"/odom"
+      child_frame_id = self.ns+"/base_footprint"
 
       odom_orientation_quat = quaternion_from_euler(0, 0, self.odom_pose.theta)
       self.odom_broadcaster.sendTransform((self.odom_pose.x, self.odom_pose.y, 0.), odom_orientation_quat, timestamp_now, child_frame_id, parent_frame_id)
@@ -428,8 +428,8 @@ class OMOR1MotorNode:
       self.odom_vel.y = 0.0
       self.odom_vel.w = d_theta / d_time
 
-      parent_frame_id = "odom"
-      child_frame_id = "base_footprint"
+      parent_frame_id = self.ns+"/odom"
+      child_frame_id = self.ns+"/base_footprint"
 
       odom_orientation_quat = quaternion_from_euler(0, 0, self.odom_pose.theta)
       self.odom_broadcaster.sendTransform((self.odom_pose.x, self.odom_pose.y, 0.), odom_orientation_quat, timestamp_now, child_frame_id, parent_frame_id)
